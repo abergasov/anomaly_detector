@@ -4,18 +4,21 @@ BUILD_TIME?=$(shell date -u '+%Y-%m-%d_%H:%M:%S')
 build:
 	@echo "-- building gathering binary"
 	go build -ldflags "-X main.buildHash=${FILE_HASH} -X main.buildTime=${BUILD_TIME}" -o ./bin/gathering ./cmd/gathering
+	go build -ldflags "-X main.buildHash=${FILE_HASH} -X main.buildTime=${BUILD_TIME}" -o ./bin/analyser ./cmd/analyser
 
 build_docker:
 	@echo "-- building docker binary. buildHash ${FILE_HASH}"
-	go build -ldflags "-X main.confFile=common_docker.yml -X main.buildHash=${FILE_HASH} -X main.buildTime=${BUILD_TIME}" -o ./bin/gathering ./cmd/gathering
+	go build -ldflags "-X main.buildHash=${FILE_HASH} -X main.buildTime=${BUILD_TIME}" -o ./bin/gathering ./cmd/gathering
+	go build -ldflags "-X main.buildHash=${FILE_HASH} -X main.buildTime=${BUILD_TIME}" -o ./bin/analyser ./cmd/analyser
 
 easy_json:
 	@echo "-- generate easy_json"
 	@echo "-- remove vendor"
 	rm -rf vendor
 	@echo "-- generate json"
-	~/go/bin/easyjson -all ~/go/src/anomaly_detector/internal/routes/routes_structs.go
-	~/go/bin/easyjson -all ~/go/src/anomaly_detector/internal/repository/repository_structs.go
+	easyjson -all ~/go/src/anomaly_detector/internal/routes/gathering/gathering_structs.go
+	easyjson -all ~/go/src/anomaly_detector/internal/routes/analyser/analyser_structs.go
+	easyjson -all ~/go/src/anomaly_detector/internal/repository/repository_structs.go
 	@echo "-- restore vendor"
 	go mod vendor
 

@@ -1,4 +1,4 @@
-package routes
+package gathering
 
 import (
 	"anomaly_detector/internal/logger"
@@ -7,7 +7,7 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-func (ar *AppRouter) Gather(ctx *fasthttp.RequestCtx) {
+func (ar *AppGatheringRouter) Gather(ctx *fasthttp.RequestCtx) {
 	event := &PayloadMessage{}
 	err := event.UnmarshalJSON(ctx.PostBody())
 	if err != nil {
@@ -21,7 +21,7 @@ func (ar *AppRouter) Gather(ctx *fasthttp.RequestCtx) {
 	_, _ = ctx.Write(strOK)
 }
 
-func (ar *AppRouter) GetStat(ctx *fasthttp.RequestCtx) {
+func (ar *AppGatheringRouter) GetStat(ctx *fasthttp.RequestCtx) {
 	sReqest := &StatRequestMessage{}
 	err := sReqest.UnmarshalJSON(ctx.PostBody())
 	if err != nil {

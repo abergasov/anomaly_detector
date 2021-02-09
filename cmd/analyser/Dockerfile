@@ -13,6 +13,6 @@ COPY --from=build /go/src/anomaly_detector/configs/* /app/configs/
 COPY --from=build /go/src/anomaly_detector/scripts/* /app/
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 RUN chmod +x /app/*
-EXPOSE 31115/tcp
+EXPOSE 31116/tcp
 #CMD /app/gathering
-ENTRYPOINT ["/app/gathering", "-config=/app/configs/common_docker_gathering.yml"]
+ENTRYPOINT ["/app/analyser", "-config=/app/configs/common_docker_analyser.yml"]

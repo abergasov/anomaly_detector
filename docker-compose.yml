@@ -15,7 +15,7 @@ services:
     ports:
       - 3666:3306
     volumes:
-      #- data_volume:/var/lib/mysql/
+      - data_volume:/var/lib/mysql/
       - ./scripts/schema.sql:/docker-entrypoint-initdb.d/1.sql
     networks:
       - app-network
@@ -26,7 +26,7 @@ services:
       context: .
       dockerfile: cmd/gathering/Dockerfile
       args:
-        - gitcommithash=$GIT_HASH
+        - GIT_COMMIT_HASH=$GIT_HASH
     restart: always
     ports:
       - 31115:31115
@@ -34,7 +34,23 @@ services:
       - gd_db
     networks:
       - app-network
-    command: ["/app/wait-for-it.sh", "dc_db:3666", "--", "/app/collector"]
+    command: ["/app/wait-for-it.sh", "gd_db:3306", "--", "/app/gathering"]
+
+  analyser_app:
+    container_name: analyser.mf
+    build:
+      context: .
+      dockerfile: cmd/analyser/Dockerfile
+      args:
+        - GIT_COMMIT_HASH=$GIT_HASH
+    restart: always
+    ports:
+      - 31116:31116
+    depends_on:
+      - gd_db
+    networks:
+      - app-network
+    command: ["/app/wait-for-it.sh", "gd_db:3306", "--", "/app/analyser"]
 
   dc_tarantool:
     image: tarantool/tarantool

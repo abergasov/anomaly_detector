@@ -1,0 +1,11 @@
+app_port: 31116
+auth_user: a
+auth_token: b
+conf_db:
+  address: 127.0.0.1
+  port: 3666
+  user: g2jvD6L8CANDsYGhJBEyQYeEbmHj
+  pass: ZTm0axdCQsrK1imCgsFq5KSAQZyzX2GhPpxr
+  db_name: data_gather
+  read_timeout: 1
+  write_timeout: 1

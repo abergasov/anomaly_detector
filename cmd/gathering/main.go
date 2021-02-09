@@ -4,7 +4,7 @@ import (
 	"anomaly_detector/internal/config"
 	"anomaly_detector/internal/logger"
 	"anomaly_detector/internal/repository/gather"
-	"anomaly_detector/internal/routes"
+	"anomaly_detector/internal/routes/gathering"
 	"anomaly_detector/internal/storage"
 	"flag"
 	"log"
@@ -18,7 +18,7 @@ var (
 	appName   = "gathering_data"
 	buildTime = "_dev"
 	buildHash = "_dev"
-	confFile  = flag.String("config", "./configs/common.yml", "Config file path")
+	confFile  = flag.String("config", "./configs/common_gathering.yml", "Config file path")
 )
 
 func main() {
@@ -31,14 +31,14 @@ func main() {
 	appConfig := config.InitConf(*confFile)
 
 	logger.Info(
-		"Try start server on port",
+		"Try start gathering server on port",
 		zap.String("port", appConfig.AppPort),
 		zap.String("url", "http://localhost:"+appConfig.AppPort),
 	)
 
 	dbConnect := storage.InitDBConnect(appConfig)
 	dataGather := gather.NewDataGather(dbConnect)
-	router := routes.InitRouter(appConfig, dataGather, appName, buildHash, buildTime)
+	router := gathering.InitGatheringRouter(appConfig, dataGather, appName, buildHash, buildTime)
 	r := router.InitRoutes()
 	err = fasthttp.ListenAndServe(":"+appConfig.AppPort, r.Handler)
 	if err != nil {

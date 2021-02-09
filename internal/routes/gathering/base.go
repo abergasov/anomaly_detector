@@ -1,7 +1,8 @@
-package routes
+package gathering
 
 import (
 	"anomaly_detector/internal/config"
+	"anomaly_detector/internal/routes"
 	"encoding/json"
 	"net/http"
 
@@ -16,21 +17,21 @@ var (
 	strOK              = []byte(`{"ok":true}`)
 )
 
-type AppRouter struct {
+type AppGatheringRouter struct {
 	appBuildInfo   []byte
 	FastHTTPEngine *router.Router
 	config         *config.AppConfig
 	collector      ICollector
 }
 
-func InitRouter(cnf *config.AppConfig, cm ICollector, appName, appHash, appBuild string) *AppRouter {
-	b, _ := json.Marshal(appInfo{
+func InitGatheringRouter(cnf *config.AppConfig, cm ICollector, appName, appHash, appBuild string) *AppGatheringRouter {
+	b, _ := json.Marshal(routes.AppInfo{
 		OK:        true,
 		AppName:   appName,
 		BuildHash: appHash,
 		BuildTime: appBuild,
 	})
-	return &AppRouter{
+	return &AppGatheringRouter{
 		FastHTTPEngine: router.New(),
 		config:         cnf,
 		collector:      cm,
@@ -38,13 +39,13 @@ func InitRouter(cnf *config.AppConfig, cm ICollector, appName, appHash, appBuild
 	}
 }
 
-func (ar *AppRouter) InitRoutes() *router.Router {
+func (ar *AppGatheringRouter) InitRoutes() *router.Router {
 	ar.FastHTTPEngine.GET("/", ar.Index)
 	ar.FastHTTPEngine.POST("/gather", ar.Gather)
 	return ar.FastHTTPEngine
 }
 
-func (ar *AppRouter) Index(ctx *fasthttp.RequestCtx) {
+func (ar *AppGatheringRouter) Index(ctx *fasthttp.RequestCtx) {
 	ctx.Response.Header.SetCanonical(strContentType, strApplicationJSON)
 	ctx.SetStatusCode(http.StatusOK)
 	_, _ = ctx.Write(ar.appBuildInfo)

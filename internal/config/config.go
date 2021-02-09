@@ -12,8 +12,10 @@ import (
 )
 
 type AppConfig struct {
-	AppPort  string `yaml:"app_port"`
-	ConfigDB DBConf `yaml:"conf_db"`
+	AppPort   string `yaml:"app_port"`
+	AuthUser  string `yaml:"auth_user"`
+	AuthToken string `yaml:"auth_token"`
+	ConfigDB  DBConf `yaml:"conf_db"`
 }
 
 type DBConf struct {
