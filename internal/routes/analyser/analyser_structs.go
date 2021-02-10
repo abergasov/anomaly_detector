@@ -1,16 +1,22 @@
 package analyser
 
-import "github.com/labstack/echo/v4"
+import (
+	"anomaly_detector/internal/repository"
 
-type IAnalyser interface {
-	GetCurrentState() []string
-}
+	"github.com/labstack/echo/v4"
+)
 
 type Resp struct {
-	OK   bool     `json:"ok"`
-	Data []string `json:"data"`
+	OK   bool                       `json:"ok"`
+	Data []repository.EventAnalysed `json:"data"`
 }
 
+//go:generate mockgen -source=analyser_structs.go -destination=analyser_structs_mock.go -package=analyser
+type IAnalyser interface {
+	GetCurrentState() []repository.EventAnalysed
+}
+
+//go:generate mockgen -source=analyser_structs.go -destination=analyser_structs_mock.go -package=analyser
 type ISessionManager interface {
 	AuthMiddleware(username, password string, c echo.Context) (bool, error)
 }

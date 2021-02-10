@@ -17,7 +17,87 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjson43905e23DecodeAnomalyDetectorInternalRepository(in *jlexer.Lexer, out *EventPreparedList) {
+func easyjson43905e23DecodeAnomalyDetectorInternalRepository(in *jlexer.Lexer, out *StatRequestMessage) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "from":
+			out.From = string(in.String())
+		case "to":
+			out.To = string(in.String())
+		case "iterator":
+			out.Iterator = int32(in.Int32())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson43905e23EncodeAnomalyDetectorInternalRepository(out *jwriter.Writer, in StatRequestMessage) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"from\":"
+		out.RawString(prefix[1:])
+		out.String(string(in.From))
+	}
+	{
+		const prefix string = ",\"to\":"
+		out.RawString(prefix)
+		out.String(string(in.To))
+	}
+	{
+		const prefix string = ",\"iterator\":"
+		out.RawString(prefix)
+		out.Int32(int32(in.Iterator))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v StatRequestMessage) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson43905e23EncodeAnomalyDetectorInternalRepository(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v StatRequestMessage) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson43905e23EncodeAnomalyDetectorInternalRepository(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *StatRequestMessage) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson43905e23DecodeAnomalyDetectorInternalRepository(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *StatRequestMessage) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson43905e23DecodeAnomalyDetectorInternalRepository(l, v)
+}
+func easyjson43905e23DecodeAnomalyDetectorInternalRepository1(in *jlexer.Lexer, out *EventPreparedList) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		in.Skip()
@@ -45,7 +125,7 @@ func easyjson43905e23DecodeAnomalyDetectorInternalRepository(in *jlexer.Lexer, o
 		in.Consumed()
 	}
 }
-func easyjson43905e23EncodeAnomalyDetectorInternalRepository(out *jwriter.Writer, in EventPreparedList) {
+func easyjson43905e23EncodeAnomalyDetectorInternalRepository1(out *jwriter.Writer, in EventPreparedList) {
 	if in == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 		out.RawString("null")
 	} else {
@@ -63,27 +143,27 @@ func easyjson43905e23EncodeAnomalyDetectorInternalRepository(out *jwriter.Writer
 // MarshalJSON supports json.Marshaler interface
 func (v EventPreparedList) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson43905e23EncodeAnomalyDetectorInternalRepository(&w, v)
+	easyjson43905e23EncodeAnomalyDetectorInternalRepository1(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v EventPreparedList) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson43905e23EncodeAnomalyDetectorInternalRepository(w, v)
+	easyjson43905e23EncodeAnomalyDetectorInternalRepository1(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *EventPreparedList) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson43905e23DecodeAnomalyDetectorInternalRepository(&r, v)
+	easyjson43905e23DecodeAnomalyDetectorInternalRepository1(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *EventPreparedList) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson43905e23DecodeAnomalyDetectorInternalRepository(l, v)
+	easyjson43905e23DecodeAnomalyDetectorInternalRepository1(l, v)
 }
-func easyjson43905e23DecodeAnomalyDetectorInternalRepository1(in *jlexer.Lexer, out *EventPrepared) {
+func easyjson43905e23DecodeAnomalyDetectorInternalRepository2(in *jlexer.Lexer, out *EventPrepared) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -118,7 +198,7 @@ func easyjson43905e23DecodeAnomalyDetectorInternalRepository1(in *jlexer.Lexer, 
 		in.Consumed()
 	}
 }
-func easyjson43905e23EncodeAnomalyDetectorInternalRepository1(out *jwriter.Writer, in EventPrepared) {
+func easyjson43905e23EncodeAnomalyDetectorInternalRepository2(out *jwriter.Writer, in EventPrepared) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -143,23 +223,103 @@ func easyjson43905e23EncodeAnomalyDetectorInternalRepository1(out *jwriter.Write
 // MarshalJSON supports json.Marshaler interface
 func (v EventPrepared) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson43905e23EncodeAnomalyDetectorInternalRepository1(&w, v)
+	easyjson43905e23EncodeAnomalyDetectorInternalRepository2(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v EventPrepared) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson43905e23EncodeAnomalyDetectorInternalRepository1(w, v)
+	easyjson43905e23EncodeAnomalyDetectorInternalRepository2(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *EventPrepared) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson43905e23DecodeAnomalyDetectorInternalRepository1(&r, v)
+	easyjson43905e23DecodeAnomalyDetectorInternalRepository2(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *EventPrepared) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson43905e23DecodeAnomalyDetectorInternalRepository1(l, v)
+	easyjson43905e23DecodeAnomalyDetectorInternalRepository2(l, v)
+}
+func easyjson43905e23DecodeAnomalyDetectorInternalRepository3(in *jlexer.Lexer, out *EventAnalysed) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "event_date":
+			out.EventDate = string(in.String())
+		case "entity_id":
+			out.EntityID = int32(in.Int32())
+		case "event_counter":
+			out.EventCounter = int32(in.Int32())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson43905e23EncodeAnomalyDetectorInternalRepository3(out *jwriter.Writer, in EventAnalysed) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"event_date\":"
+		out.RawString(prefix[1:])
+		out.String(string(in.EventDate))
+	}
+	{
+		const prefix string = ",\"entity_id\":"
+		out.RawString(prefix)
+		out.Int32(int32(in.EntityID))
+	}
+	{
+		const prefix string = ",\"event_counter\":"
+		out.RawString(prefix)
+		out.Int32(int32(in.EventCounter))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v EventAnalysed) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson43905e23EncodeAnomalyDetectorInternalRepository3(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v EventAnalysed) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson43905e23EncodeAnomalyDetectorInternalRepository3(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *EventAnalysed) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson43905e23DecodeAnomalyDetectorInternalRepository3(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *EventAnalysed) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson43905e23DecodeAnomalyDetectorInternalRepository3(l, v)
 }

@@ -9,8 +9,12 @@ import (
 )
 
 var (
-	sqlLimited   = "SELECT * FROM events_count WHERE ec_id > ? event_date > ? AND event_date < ? ORDER BY ec_id ASC LIMIT 500"
-	sqlUnLimited = "SELECT * FROM events_count WHERE ec_id > ? event_date > ? ORDER BY ec_id ASC LIMIT 500"
+	// has iterator, data from/to
+	sqlLimited = "SELECT event_date, entity_id, event_counter FROM events_count WHERE ec_id > ? AND event_date > ? AND event_date < ? ORDER BY ec_id ASC LIMIT 500"
+	// has iterator, data from
+	sqlUnLimited = "SELECT event_date, entity_id, event_counter FROM events_count WHERE ec_id > ? AND event_date > ? ORDER BY ec_id ASC LIMIT 500"
+	// only start date have
+	sqlStart = "SELECT event_date, entity_id, event_counter FROM events_count WHERE event_date > ? ORDER BY ec_id ASC LIMIT 500"
 )
 
 type DataGather struct {
@@ -92,14 +96,17 @@ func (d *DataGather) HandleEventWithPool(entityID int32, eventLabel string, even
 	d.pool.Put(&s)
 }
 
-func (d *DataGather) GetState(from, to string, iterator int32) (repository.EventPreparedList, error) {
+func (d *DataGather) GetState(data repository.StatRequestMessage) (repository.EventPreparedList, error) {
 	var p []repository.EventPrepared
 	var err error
-	if to != "" {
-		err = d.db.Select(&p, sqlLimited, from, to, iterator)
+	if data.To != "" && data.Iterator > 0 {
+		err = d.db.Select(&p, sqlLimited, data.Iterator, data.From, data.To)
+	} else if data.Iterator == 0 && data.To == "" {
+		err = d.db.Select(&p, sqlStart, data.From)
 	} else {
-		err = d.db.Select(&p, sqlUnLimited, from, iterator)
+		err = d.db.Select(&p, sqlUnLimited, data.Iterator, data.From)
 	}
+
 	if err != nil {
 		logger.Error("error load stat", err)
 	}

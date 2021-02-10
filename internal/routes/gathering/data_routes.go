@@ -2,6 +2,7 @@ package gathering
 
 import (
 	"anomaly_detector/internal/logger"
+	"anomaly_detector/internal/repository"
 	"net/http"
 
 	"github.com/valyala/fasthttp"
@@ -22,14 +23,18 @@ func (ar *AppGatheringRouter) Gather(ctx *fasthttp.RequestCtx) {
 }
 
 func (ar *AppGatheringRouter) GetStat(ctx *fasthttp.RequestCtx) {
-	sReqest := &StatRequestMessage{}
+	sReqest := &repository.StatRequestMessage{}
 	err := sReqest.UnmarshalJSON(ctx.PostBody())
 	if err != nil {
 		ctx.SetStatusCode(http.StatusBadRequest)
 		return
 	}
+	if sReqest.From == "" && sReqest.To == "" && sReqest.Iterator == 0 {
+		ctx.SetStatusCode(http.StatusBadRequest)
+		return
+	}
 
-	data, errG := ar.collector.GetState(sReqest.From, sReqest.To, sReqest.Iterator)
+	data, errG := ar.collector.GetState(*sReqest)
 	if errG != nil {
 		ctx.SetStatusCode(http.StatusInternalServerError)
 		return

@@ -15,6 +15,7 @@ type AppConfig struct {
 	AppPort   string `yaml:"app_port"`
 	AuthUser  string `yaml:"auth_user"`
 	AuthToken string `yaml:"auth_token"`
+	GatherURL string `yaml:"gather_url"`
 	ConfigDB  DBConf `yaml:"conf_db"`
 }
 

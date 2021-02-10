@@ -44,30 +44,29 @@ services:
       args:
         - GIT_COMMIT_HASH=$GIT_HASH
     restart: always
+    depends_on:
+      - gathering_app
     ports:
       - 31116:31116
-    depends_on:
-      - gd_db
     networks:
       - app-network
-    command: ["/app/wait-for-it.sh", "gd_db:3306", "--", "/app/analyser"]
 
-  dc_tarantool:
-    image: tarantool/tarantool
-    env_file:
-      - configs/common.env
-    container_name: gc_tnt.mf
-    volumes:
-      - ./scripts:/usr/local/share/tarantool/
-      #- data_volume:/var/lib/tarantool
-
-    command: tarantool /usr/local/share/tarantool/app.init.lua
-    networks:
-      - app-network
-    ports:
-      - 3999:3301
-    depends_on:
-      - gd_db
+#  dc_tarantool:
+#    image: tarantool/tarantool
+#    env_file:
+#      - configs/common.env
+#    container_name: gc_tnt.mf
+#    volumes:
+#      - ./scripts:/usr/local/share/tarantool/
+#      #- data_volume:/var/lib/tarantool
+#
+#    command: tarantool /usr/local/share/tarantool/app.init.lua
+#    networks:
+#      - app-network
+#    ports:
+#      - 3999:3301
+#    depends_on:
+#      - gd_db
 
 networks:
   app-network:

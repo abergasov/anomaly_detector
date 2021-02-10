@@ -9,7 +9,7 @@ FILE_HASH=$(git rev-parse HEAD)
 export GIT_HASH=$FILE_HASH
 
 echo "RUN docker-compose-dev.yml "
-serviceList="gd_db dc_tarantool gathering_app analyser_app"
+serviceList="gd_db gathering_app analyser_app"
 #serviceList="gd_db dc_tarantool"
 echo "RUNNING SERVICES: $serviceList"
 docker-compose -f docker-compose.yml pull

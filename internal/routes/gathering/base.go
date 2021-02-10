@@ -42,6 +42,7 @@ func InitGatheringRouter(cnf *config.AppConfig, cm ICollector, appName, appHash,
 func (ar *AppGatheringRouter) InitRoutes() *router.Router {
 	ar.FastHTTPEngine.GET("/", ar.Index)
 	ar.FastHTTPEngine.POST("/gather", ar.Gather)
+	ar.FastHTTPEngine.POST("/stat", ar.GetStat)
 	return ar.FastHTTPEngine
 }
 

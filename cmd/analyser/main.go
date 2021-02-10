@@ -3,7 +3,7 @@ package main
 import (
 	"anomaly_detector/internal/config"
 	"anomaly_detector/internal/logger"
-	"anomaly_detector/internal/repository/anomaly_analysator"
+	"anomaly_detector/internal/repository/anomaly"
 	"anomaly_detector/internal/repository/session"
 	"anomaly_detector/internal/routes/analyser"
 	"flag"
@@ -28,9 +28,9 @@ func main() {
 	logger.Info("start app")
 	appConfig := config.InitConf(*confFile)
 	sessionRepo := session.InitSessionManager(appConfig)
-	analyserDetector := anomaly_analysator.InitAnalyser()
+	analyserDetector := anomaly.InitAnalyser(appConfig)
 	logger.Info(
-		"Try start analysing server on port",
+		"Try start analyzing server on port",
 		zap.String("port", appConfig.AppPort),
 		zap.String("url", "http://localhost:"+appConfig.AppPort),
 	)

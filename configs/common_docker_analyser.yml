@@ -1,6 +1,7 @@
 app_port: 31116
 auth_user: a
 auth_token: b
+gather_url: http://gathering_app:31115
 conf_db:
   address: gd_db
   port: 3306

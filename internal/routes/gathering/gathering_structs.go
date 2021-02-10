@@ -10,13 +10,8 @@ type PayloadMessage struct {
 	Value    int32  `json:"value"`
 }
 
-type StatRequestMessage struct {
-	From     string `json:"from"`
-	To       string `json:"to"`
-	Iterator int32  `json:"iterator"`
-}
-
+//go:generate mockgen -source=gathering_structs.go -destination=gathering_structs_mock.go -package=gathering
 type ICollector interface {
 	HandleEvent(entityID int32, eventLabel string, eventValue int32)
-	GetState(from, to string, iterator int32) (repository.EventPreparedList, error)
+	GetState(data repository.StatRequestMessage) (repository.EventPreparedList, error)
 }
