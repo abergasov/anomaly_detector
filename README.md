@@ -54,4 +54,3 @@ analyse app (AA) стартует и в фоне, в цикле каждые 2 �
 wrk -s bench.lua -t12 -c400 -d30s http://localhost:31115/gather
 hey -m POST -d '{"id":123,"label":"view","value":5}' -z 10s http://localhost:31115/gather
 ```
-![result](data_gather.jpg)
