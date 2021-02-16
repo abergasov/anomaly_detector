@@ -1,4 +1,6 @@
 ## Desc
+[Src task](Anomalies_Detection_-_v_1_1.pdf) 
+
 поднятие в докере 
 ```shell
 go mod vendor # зависимости
